@@ -31,7 +31,11 @@ public class Program
 
                 var rabbitMQSettings = builder.Configuration.GetSection("RabbitMQSettings").Get<RabbitMQSettings>();
                 var serviceSettings = builder.Configuration.GetSection("ServiceSettings").Get<ServiceSettings>();
-                configurator.Host(rabbitMQSettings.Host);
+                configurator.Host(rabbitMQSettings.Host, (cfg) =>
+                {
+                    cfg.Username(rabbitMQSettings.User);
+                    cfg.Password(rabbitMQSettings.Password);
+                });
                 configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(false));
             });
         });
